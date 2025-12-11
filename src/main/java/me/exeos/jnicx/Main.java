@@ -29,7 +29,6 @@ public class Main {
             System.exit(1);
         }
 
-
         ArrayList<Platform> platforms = new ArrayList<>();
         for (int i = 1; i < args.length; i += 3) {
             String name = args[i];
