@@ -6,8 +6,7 @@ import java.util.HashMap;
 
 public class JnicExtractor {
 
-
-    public static HashMap<Platform, byte[]> extractPlatformBinaries(InputStream input, ArrayList<Platform> platforms) {
+    public static HashMap<Platform, byte[]> extractPlatformBinaries(File input, ArrayList<Platform> platforms) {
         HashMap<Platform, byte[]> result = new HashMap<>();
 
         for (Platform platform : platforms) {
@@ -17,11 +16,11 @@ public class JnicExtractor {
             byte[] readBuffer = new byte[2048];
 
             try {
-                JnicInputStream jnicInputStream = new JnicInputStream(new DataInputStream(input));
+                JnicInputStream jnicInputStream = new JnicInputStream(new DataInputStream(new FileInputStream(input)));
                 ByteArrayOutputStream binaryOutputStream = new ByteArrayOutputStream();
 
-                long currentPosition;
-                long bytesSkipped;
+                long currentPosition = 0;
+                long bytesSkipped = 0;
 
                 for (currentPosition = 0L; currentPosition < skipOffset; currentPosition += bytesSkipped) {
                     bytesSkipped = jnicInputStream.skip(skipOffset - currentPosition);
@@ -36,7 +35,7 @@ public class JnicExtractor {
                 }
 
                 result.put(platform, binaryOutputStream.toByteArray());
-            } catch (IOException e) {
+            } catch (Exception e) {
                 System.out.println("Failed to extract platform: " + platform.name());
             }
         }

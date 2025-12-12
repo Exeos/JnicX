@@ -4,7 +4,6 @@ import me.exeos.jnicx.jnic.JnicExtractor;
 import me.exeos.jnicx.jnic.Platform;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -48,16 +47,7 @@ public class Main {
 
         System.out.println("Extracting.");
 
-        FileInputStream inputStream;
-        try {
-            inputStream = new FileInputStream(input);
-        } catch (IOException e) {
-            System.out.println("Failed create InputStream from File Object.");
-            System.exit(1);
-            return;
-        }
-
-        HashMap<Platform, byte[]> result = JnicExtractor.extractPlatformBinaries(inputStream, platforms);
+        HashMap<Platform, byte[]> result = JnicExtractor.extractPlatformBinaries(input, platforms);
         if (result.isEmpty()) {
             System.out.println("Extractor returned no output.");
             return;
