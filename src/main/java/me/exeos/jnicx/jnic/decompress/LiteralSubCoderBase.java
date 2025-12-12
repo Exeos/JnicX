@@ -1,4 +1,4 @@
-package me.exeos.jnicx.jnic.is;
+package me.exeos.jnicx.jnic.decompress;
 
 import java.util.Arrays;
 

@@ -1,16 +1,13 @@
 package me.exeos.jnicx.jnic;
 
-import me.exeos.jnicx.jnic.is.JnicInputStream;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
 
 public class JnicExtractor {
 
 
-    public static Optional<HashMap<Platform, byte[]>> extractPlatformBinaries(InputStream input, ArrayList<Platform> platforms) {
+    public static HashMap<Platform, byte[]> extractPlatformBinaries(InputStream input, ArrayList<Platform> platforms) {
         HashMap<Platform, byte[]> result = new HashMap<>();
 
         for (Platform platform : platforms) {
@@ -29,7 +26,7 @@ public class JnicExtractor {
                 for (currentPosition = 0L; currentPosition < skipOffset; currentPosition += bytesSkipped) {
                     bytesSkipped = jnicInputStream.skip(skipOffset - currentPosition);
                     if (bytesSkipped > 0L) continue;
-                    return Optional.empty();
+                    throw new IOException("Failed to skip to start offset.");
                 }
 
                 while (currentPosition < endOffset) {
@@ -44,6 +41,6 @@ public class JnicExtractor {
             }
         }
 
-        return Optional.of(result);
+        return result;
     }
 }

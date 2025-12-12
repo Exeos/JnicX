@@ -1,4 +1,4 @@
-package me.exeos.jnicx.jnic.is;
+package me.exeos.jnicx.jnic.decompress;
 
 public abstract class LiteralCoderBase {
     final int literalContextBits;

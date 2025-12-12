@@ -1,4 +1,8 @@
-package me.exeos.jnicx.jnic.is;
+package me.exeos.jnicx.jnic;
+
+import me.exeos.jnicx.jnic.decompress.BufferedRangeDecoder;
+import me.exeos.jnicx.jnic.decompress.LZMADecoder;
+import me.exeos.jnicx.jnic.decompress.SlidingWindowBuffer;
 
 import java.io.DataInputStream;
 import java.io.IOException;
