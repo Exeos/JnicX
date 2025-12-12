@@ -45,8 +45,6 @@ public class Main {
             platforms.add(new Platform(name, startOffset, endOffset));
         }
 
-        System.out.println("Extracting.");
-
         HashMap<Platform, byte[]> result = JnicExtractor.extractPlatformBinaries(input, platforms);
         if (result.isEmpty()) {
             System.out.println("Extractor returned no output.");
