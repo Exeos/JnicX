@@ -4,7 +4,7 @@ A tool to extract native shared libraries (`.so`, `.dll`, `.dylib`) from the com
 
 ## Requirements
 
-- Java 21 or higher
+- Java 17 or higher
 - Maven (for building from source)
 
 ## Building
@@ -48,7 +48,7 @@ java -jar jnicx.jar native.bin linux-x64 23552 36332 windows-x64 0 11776 macos-a
    This is typically found at: `dev/jnic/<random>/JNICLoader.class`
 
 2. **Decompile the class**  
-   Use a Java decompiler (such as [Recaf](https://github.com/Col-E/Recaf)) to decompile the class file.
+   Use a Java decompiler (such as those bundled in [Recaf](https://github.com/Col-E/Recaf)), to decompile the class file.
 
 3. **Find the offsets in the `<clinit>` method**  
    The offsets for each platform are located in the static class initializer (`<clinit>`). Look for a pattern similar to the example below, where `l` is the start offset and `l2` is the end offset:
