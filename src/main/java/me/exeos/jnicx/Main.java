@@ -12,11 +12,28 @@ import java.util.HashMap;
 public class Main {
 
     public static void main(String[] args) {
-        if (args.length < 4 || (args.length - 1) % 3 != 0) {
-            System.out.println("Usage: jnicx file platform(s):<name, startOffset, endOffset>");
+        if (args.length < 5 || (args.length - 2) % 3 != 0) {
+            System.out.println("Usage:");
+            System.out.println("jnicx extract <filePath> platform(s):<name, startOffset, endOffset>");
+            System.out.println("or");
+            System.out.println("jnicx pack <pathToBinaries> platform(s):<platform-string, startOffset, endOffset>");
             return;
         }
 
+        String option = args[0];
+        String[] params = new String[args.length - 1];
+
+        // copy all args except option
+        System.arraycopy(args, 1, params, 0, args.length - 1);
+
+        if (option.equals("extract")) {
+            extract(params);
+        } else if (option.equals("pack")) {
+            pack(params);
+        }
+    }
+
+    private static void extract(String[] args) {
         File input = new File(args[0]);
         if (!input.exists()) {
             System.out.println("Input file does not exist.");
@@ -67,5 +84,9 @@ public class Main {
                 System.out.println("Failed to create or write file: " + outputFile.getAbsolutePath());
             }
         }
+    }
+
+    private static void pack(String[] args) {
+
     }
 }
