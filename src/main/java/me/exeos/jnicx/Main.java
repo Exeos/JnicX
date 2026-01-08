@@ -1,6 +1,7 @@
 package me.exeos.jnicx;
 
 import me.exeos.jnicx.jnic.JnicExtractor;
+import me.exeos.jnicx.jnic.JnicPacker;
 import me.exeos.jnicx.jnic.Platform;
 
 import java.io.File;
@@ -8,12 +9,30 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class Main {
 
     public static void main(String[] args) {
+        if (args.length == 0) {
+            printUsage();
+            return;
+        }
+
+        // remove first param (pack or extract)
+        String[] params = new String[args.length - 1];
+        System.arraycopy(args, 1, params, 0, args.length - 1);
+
+        switch (args[0]) {
+            case "extract" -> extract(params);
+            case "pack" -> pack(params);
+            default -> printUsage();
+        }
+    }
+
+    private static void extract(String[] args) {
         if (args.length < 4 || (args.length - 1) % 3 != 0) {
-            System.out.println("Usage: jnicx file platform(s):<name, startOffset, endOffset>");
+            printUsage();
             return;
         }
 
@@ -45,8 +64,6 @@ public class Main {
             platforms.add(new Platform(name, startOffset, endOffset));
         }
 
-        System.out.println("Extracting.");
-
         HashMap<Platform, byte[]> result = JnicExtractor.extractPlatformBinaries(input, platforms);
         if (result.isEmpty()) {
             System.out.println("Extractor returned no output.");
@@ -69,5 +86,31 @@ public class Main {
                 System.out.println("Failed to create or write file: " + outputFile.getAbsolutePath());
             }
         }
+    }
+
+    private static void pack(String[] args) {
+        if (args.length == 0) {
+            printUsage();
+            return;
+        }
+
+        File[] binaries = new File[args.length];
+        for (int i = 0; i < args.length; i++) {
+            binaries[i] = new File(args[i]);
+        }
+
+        Optional<File> output = JnicPacker.pack(binaries);
+        if (output.isPresent()) {
+            System.out.println("Packed: " + output.get().getAbsolutePath());
+        } else {
+            System.out.println("Packer retuned no output.");
+        }
+    }
+
+    private static void printUsage() {
+        System.out.println("Usage:");
+        System.out.println("jnicx extract <filePath> platform(s):<name, startOffset, endOffset>");
+        System.out.println("or");
+        System.out.println("jnicx pack binaries:<binaryFilePath>");
     }
 }

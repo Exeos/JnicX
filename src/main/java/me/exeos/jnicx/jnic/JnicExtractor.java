@@ -1,5 +1,7 @@
 package me.exeos.jnicx.jnic;
 
+import me.exeos.jnicx.jnic.io.JnicInputStream;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
