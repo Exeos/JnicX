@@ -1,4 +1,4 @@
-package me.exeos.jnicx.jnic;
+package me.exeos.jnicx.jnic.io;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

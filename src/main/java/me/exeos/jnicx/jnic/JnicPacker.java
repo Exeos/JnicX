@@ -1,5 +1,7 @@
 package me.exeos.jnicx.jnic;
 
+import me.exeos.jnicx.jnic.io.JnicOutputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

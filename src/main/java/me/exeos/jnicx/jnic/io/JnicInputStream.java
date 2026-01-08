@@ -1,4 +1,4 @@
-package me.exeos.jnicx.jnic;
+package me.exeos.jnicx.jnic.io;
 
 import me.exeos.jnicx.jnic.decompress.BufferedRangeDecoder;
 import me.exeos.jnicx.jnic.decompress.LZMADecoder;
@@ -10,6 +10,7 @@ import java.io.InputStream;
 
 public class JnicInputStream extends InputStream {
 
+    private final byte[] singleByteBuf = new byte[1];
     private DataInputStream dataInputStream;
     private SlidingWindowBuffer slidingWinBuffer;
     private BufferedRangeDecoder rangeDecoder;
@@ -20,7 +21,6 @@ public class JnicInputStream extends InputStream {
     private boolean needsNewDecoder = true;
     private boolean endOfStream = false;
     private IOException previousException = null;
-    private final byte[] singleByteBuf = new byte[1];
 
     public JnicInputStream(InputStream inputStream) {
         this(inputStream, 0x4000000, null);
@@ -181,12 +181,12 @@ public class JnicInputStream extends InputStream {
                 this.remainingBlockBytes -= n11;
                 if (this.remainingBlockBytes != 0) continue;
                 BufferedRangeDecoder bufferedRangeDecoder2 = this.rangeDecoder;
-                if (bufferedRangeDecoder2.readPosition == bufferedRangeDecoder2.inputBuffer.length && bufferedRangeDecoder2.code == 0 && !(this.slidingWinBuffer.pendingLength > 0)) continue;
+                if (bufferedRangeDecoder2.readPosition == bufferedRangeDecoder2.inputBuffer.length && bufferedRangeDecoder2.code == 0 && !(this.slidingWinBuffer.pendingLength > 0))
+                    continue;
                 throw new IOException();
             }
             return totalBytesRead;
-        }
-        catch (IOException iOException) {
+        } catch (IOException iOException) {
             this.previousException = iOException;
             throw iOException;
         }
@@ -219,9 +219,7 @@ public class JnicInputStream extends InputStream {
             this.releaseResources();
             try {
                 this.dataInputStream.close();
-                return;
-            }
-            finally {
+            } finally {
                 this.dataInputStream = null;
             }
         }
