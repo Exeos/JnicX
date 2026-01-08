@@ -7,15 +7,10 @@ import java.io.OutputStream;
 public class JnicOutputStream extends OutputStream {
 
     private final DataOutputStream dataOutputStream;
-    private final int maxBlockSize;
+    private long written = 0;
 
     public JnicOutputStream(OutputStream out) {
-        this(out, 0x4000000);
-    }
-
-    public JnicOutputStream(OutputStream out, int maxBlockSize) {
         this.dataOutputStream = new DataOutputStream(out);
-        this.maxBlockSize = maxBlockSize;
     }
 
     @Override
@@ -37,7 +32,11 @@ public class JnicOutputStream extends OutputStream {
     private void writeUncompressedBlock(byte[] buf, int off, int len) throws IOException {
         dataOutputStream.writeByte(1); // block header: 1 = reset, uncompressed
         dataOutputStream.writeShort(len - 1); // size-1 as unsigned short
-        dataOutputStream.write(buf, off, len); // raw data bytes
+        dataOutputStream.write(buf, off, len); // raw data
+
+        written += 1; // block header (byte size)
+        written += 2; // short size
+        written += len; // data size
     }
 
     @Override
@@ -50,5 +49,11 @@ public class JnicOutputStream extends OutputStream {
         dataOutputStream.writeByte(0);
         dataOutputStream.flush();
         dataOutputStream.close();
+
+        written++;
+    }
+
+    public long currentSize() {
+        return written;
     }
 }
