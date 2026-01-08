@@ -7,7 +7,7 @@ import java.io.OutputStream;
 public class JnicOutputStream extends OutputStream {
 
     private final DataOutputStream dataOutputStream;
-    private long written = 0;
+    private long logicalSize = 0;
 
     public JnicOutputStream(OutputStream out) {
         this.dataOutputStream = new DataOutputStream(out);
@@ -34,9 +34,7 @@ public class JnicOutputStream extends OutputStream {
         dataOutputStream.writeShort(len - 1); // size-1 as unsigned short
         dataOutputStream.write(buf, off, len); // raw data
 
-        written += 1; // block header (byte size)
-        written += 2; // short size
-        written += len; // data size
+        logicalSize += len;
     }
 
     @Override
@@ -49,11 +47,9 @@ public class JnicOutputStream extends OutputStream {
         dataOutputStream.writeByte(0);
         dataOutputStream.flush();
         dataOutputStream.close();
-
-        written++;
     }
 
     public long currentSize() {
-        return written;
+        return logicalSize;
     }
 }
