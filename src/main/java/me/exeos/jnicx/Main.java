@@ -109,8 +109,8 @@ public class Main {
 
     private static void printUsage() {
         System.out.println("Usage:");
-        System.out.println("jnicx extract <filePath> platform(s):<name, startOffset, endOffset>");
+        System.out.println("jnicx extract <input-file> [<platform-name> <start-offset> <end-offset>]...");
         System.out.println("or");
-        System.out.println("jnicx pack binaries:<binaryFilePath>");
+        System.out.println("jnicx pack [<binary-file>]...");
     }
 }
